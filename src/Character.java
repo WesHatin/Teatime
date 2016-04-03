@@ -1,12 +1,13 @@
 import java.awt.Color;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-public class Character extends SwingWorker{
+public class Character extends SwingWorker implements Serializable{
 	private boolean position;
 	private int xLoc;
 	private int yLoc;
@@ -15,7 +16,10 @@ public class Character extends SwingWorker{
 	private boolean delete;
 	public boolean done = false;
 	//private Shape shape;
-
+	public Character(){
+		super();
+	}
+	
 	public Character(boolean position, int xLoc, int yLoc, Color color){
 		this.position = position;
 		this.xLoc = xLoc;
@@ -23,6 +27,20 @@ public class Character extends SwingWorker{
 		this.color = color;
 		delete = false;
 		action = new ArrayList<Point>();
+	}
+
+	public Character(int xLoc, int yLoc, ArrayList<Point> action, Color color) {
+		this.xLoc = xLoc;
+		this.yLoc = yLoc;
+		this.action = action;
+		this.color = color;
+	}
+	
+	public Character(int xLoc, int yLoc, Color color) {
+		this.xLoc = xLoc;
+		this.yLoc = yLoc;
+		action = new ArrayList<Point>();
+		this.color = color;
 	}
 
 	public boolean isDelete() {
@@ -79,6 +97,13 @@ public class Character extends SwingWorker{
 		else
 			return action.get(action.size()-1);
 	}
+	
+	public Point getFirst(){
+		if(action.size()==0)
+			return new Point(xLoc, yLoc);
+		else
+			return action.get(0);
+	}
 	public void setPoint(Point point){
 		this.xLoc = point.x;
 		this.yLoc = point.y;
@@ -90,23 +115,25 @@ public class Character extends SwingWorker{
 
 	@Override
 	protected Object doInBackground() throws Exception {
-		for(int i=0; i<action.size(); i++){			
-			if(delete){
-				System.out.println("Delete");
-				setPoint(action.remove(i));
-				Thread.sleep(50);
-			} else {
+		//System.out.println("\t\tEXECUTING");
+		for(int i=0; i<action.size(); i++){	
+				//System.out.println(action.get(i));
 				setPoint(action.get(i));
 				Thread.sleep(50);
-			}
 		}
 		done = true;
+		
 		return true;
 	}
 
 	@Override
 	protected void done() {
-		GamePlay.initNextStage(this);
+		//System.out.println("Done");
+		if (GamePlay.isSimulating) {
+			GamePlay.sameStage();
+		} else
+			GamePlay.initNextStage(this);
+		
 	}
 
 	public String toString(){

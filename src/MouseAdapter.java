@@ -18,12 +18,13 @@ public class MouseAdapter extends MouseInputAdapter implements ActionListener {
 	public void mousePressed(MouseEvent e){
 		isDrag = true;
 		action = new ArrayList<Point>();
-		System.out.println("Mouse Pressed");
+		//System.out.println("Mouse Pressed");
 	}
 
 	public void mouseDragged(MouseEvent e){
-		System.out.println("Mouse Dragged");
+		//System.out.println("Mouse Dragged");
 		action.add(e.getPoint());
+		GameBoard.hasChanged = true;
 		GameBoard.setAction(e.getPoint(), action);
 	}
 
@@ -31,20 +32,21 @@ public class MouseAdapter extends MouseInputAdapter implements ActionListener {
 		isDrag = false;
 		
 		if(SwingUtilities.isLeftMouseButton(e)){
-			System.out.println("Left Click");
+			//System.out.println("Left Click");
 			
 			if(GameBoard.isEmpty(e.getPoint()))
+				if(GamePlay.currentStage==0)
 				GamePlay.addCharacter(e.getPoint());
 			else
 				GameBoard.changePosition(e.getPoint());
 		} else if(SwingUtilities.isRightMouseButton(e)){
-			System.out.println("Right Click");
+			//System.out.println("Right Click");
 			GameBoard.removePoint(e.getPoint());
 		}
 	}
 	
 	public void mouseReleased(MouseEvent e){
-		System.out.println("Mouse Released");
+		//System.out.println("Mouse Released");
 		
 		if(isDrag){
 			GameBoard.setAction(e.getPoint(), action);
@@ -53,28 +55,19 @@ public class MouseAdapter extends MouseInputAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println(arg0.getActionCommand() + " Pressed");
+		//System.out.println(arg0.getActionCommand() + " Pressed");
 		
-		System.out.println(arg0.getActionCommand());
+		//System.out.println(arg0.getActionCommand());
 		if(arg0.getActionCommand().equals("Run")){
 			GamePlay.simulate();
 		} else if(arg0.getActionCommand().equals("Clear")){
 			GamePlay.clear();
 		} else if(arg0.getActionCommand().equals("Next Stage")){
+//			ArrayList<Character> chars = Play.getStages().get(GamePlay.currentStage).getCharacters();
+//			GamePlay.setCharacters(Play.getStages().get(GamePlay.currentStage).getCharacters());
 			GamePlay.nextStage();	
 		} else if(arg0.getActionCommand().equals("Previous Stage")){
-			//Save to stage arraylist
-			if(Play.getStages().size()<= GamePlay.currentStage)
-				Play.getStages().add(new Stage(GamePlay.getCharacters()));
-			else			
-				Play.getStages().set(GamePlay.currentStage, new Stage(GamePlay.getCharacters()));
-			
-			if(GamePlay.currentStage > 0)
-			GamePlay.currentStage--;
-			
-			for(int i=0; i<GamePlay.getCharacters().size(); i++){
-				GamePlay.setCharacters(Play.getStages().get(GamePlay.currentStage).getCharacters());
-			}
+			GamePlay.previousStage();
 		}
 		
 	}

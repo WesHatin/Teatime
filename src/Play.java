@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Play {
+public class Play implements Serializable{
 	private static ArrayList<Stage> stages;
 	
 	public Play(){
@@ -10,5 +11,9 @@ public class Play {
 
 	public static ArrayList<Stage> getStages() {
 		return stages;
+	}
+	
+	public void setStages(ArrayList<Stage> stages){
+		this.stages = stages;
 	}
 }
