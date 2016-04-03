@@ -8,26 +8,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 import java.awt.Panel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JSpinner;
+import javax.swing.JComboBox;
 
 public class GameFrame extends JFrame {
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GameFrame frame = new GameFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -63,8 +51,20 @@ public class GameFrame extends JFrame {
 		runButton.addActionListener(new MouseAdapter());
 		panel.add(runButton);
 		
+		JButton previousStage = new JButton("Previous Stage");
+		previousStage.addActionListener(new MouseAdapter());
+		panel.add(previousStage);
+		
+		JComboBox comboBox = new JComboBox();
+		panel.add(comboBox);
+		
 		JButton clearButton = new JButton("Clear");
+		clearButton.addActionListener(new MouseAdapter());
 		panel.add(clearButton);
+		
+		JButton btnNextStage = new JButton("Next Stage");
+		btnNextStage.addActionListener(new MouseAdapter());
+		panel.add(btnNextStage);
 		
 		contentPane.setVisible(true);
 	}

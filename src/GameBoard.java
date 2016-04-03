@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -59,6 +60,7 @@ public class GameBoard extends JPanel {
 			g2d.drawString("X", characters.get(i).getxLoc(), characters.get(i).getyLoc());
 			
 			g2d.setColor(PATH);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			ArrayList<Point> temp = characters.get(i).getAction();
 			for(int k=0; k<temp.size()-1; k++){
 				g2d.drawLine((int)temp.get(k).getX(), (int)temp.get(k).getY(), (int)temp.get(k+1).getX(), (int)temp.get(k+1).getY());
@@ -112,7 +114,9 @@ public class GameBoard extends JPanel {
 	}
 
 	public static void clear() {
-		characters = new ArrayList<>();
+		for(int i=0; i<GamePlay.getCharacters().size(); i++){
+			GamePlay.getCharacters().get(i).getAction().clear();
+		}
 	}
 
 }
